@@ -1,0 +1,45 @@
+:root {
+  --rolling-stone: #6E777A;
+  --mine-shaft: #2B2B2B;
+  --tower-gray: #A7BABE;
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--mine-shaft);
+  --color-main-text: var(--tower-gray);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    //--color-background: var(--vt-c-black);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
