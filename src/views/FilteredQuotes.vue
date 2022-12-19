@@ -1,21 +1,25 @@
 <script setup lang="ts">
 import { allQuotes } from "@/data/quotes";
-import { computed } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import router from "@/router";
 
-const props = defineProps(['pageName'])
+const props = defineProps({
+  pageName: String
+})
 
-const filterBooks = () => {
-  return allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
+const filter = computed(() => router.currentRoute.value.query.filter)
+
+const filteredQuotes = ref()
+
+const filterAllQuotes = () => {
+  filteredQuotes.value = allQuotes.filter(item => item.text.includes(filter.value))
 }
 
-const filterThemes = () => {
-  return allQuotes.filter(item => item.theme === router.currentRoute.value.params.id)
-}
+const filterBooks = () => allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
 
-const chooseRandomQuote = () => {
-  return [allQuotes[Math.floor(Math.random() * allQuotes.length)]];
-}
+const filterThemes = () => allQuotes.filter(item => item.theme === router.currentRoute.value.params.id)
+
+const chooseRandomQuote = () => [allQuotes[Math.floor(Math.random() * allQuotes.length)]];
 
 const currentPage = computed(() => {
   if (router.currentRoute.value.name === 'books' || router.currentRoute.value.name === 'themes') {
@@ -23,8 +27,10 @@ const currentPage = computed(() => {
   } else return props.pageName
 })
 
-const filteredQuotes = computed(() => {
-  if (router.currentRoute.value.name === 'books') {
+const quotes = computed(() => {
+  if (filteredQuotes.value?.length) {
+    return filteredQuotes.value
+  } else if (router.currentRoute.value.name === 'books') {
     return filterBooks()
   } else if (router.currentRoute.value.name === 'themes') {
     return filterThemes()
@@ -33,6 +39,15 @@ const filteredQuotes = computed(() => {
   } else {
     return allQuotes
   }
+})
+
+watch(filter, () => {
+  filterAllQuotes()
+})
+
+
+onMounted(() => {
+  filterAllQuotes()
 })
 
 </script>
@@ -44,7 +59,7 @@ const filteredQuotes = computed(() => {
       <router-link :to="router.currentRoute.value.fullPath">{{ currentPage}}</router-link>
     </div>
     <ul>
-      <li v-for="quote in filteredQuotes" :key="quote.id">
+      <li v-for="quote in quotes" :key="quote.id">
         {{ quote.text }} <br>
         {{ quote.details }}
       </li>

@@ -18,23 +18,23 @@ const router = createRouter({
     {
       path: '/castaneda/books/:id',
       name: 'books',
-      component: import('../views/FilteredQuotes.vue'),
+      component: () => import('../views/FilteredQuotes.vue'),
     },
     {
       path: '/castaneda/themes/:id',
       name: 'themes',
-      component: import('../views/FilteredQuotes.vue'),
+      component: () => import('../views/FilteredQuotes.vue'),
     },
     {
       path: '/castaneda/random',
       name: 'random',
-      component: import('../views/FilteredQuotes.vue'),
+      component: () => import('../views/FilteredQuotes.vue'),
       props: { pageName: 'рандом' }
     },
     {
-      path: '/castaneda/filter/:id',
+      path: '/castaneda/:id',
       name: 'filter',
-      component: import('../views/FilteredQuotes.vue'),
+      component: () => import('../views/FilteredQuotes.vue'),
       props: { pageName: 'фильтр' }
     },
   ]
