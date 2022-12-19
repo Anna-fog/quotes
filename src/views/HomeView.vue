@@ -20,10 +20,12 @@ const generateRoute = (filter: string, type: string) => {
 </script>
 
 <template>
-  <main>
-    <nav class="navigation container">
-      Карлос Кастанеда
-      <ul>
+  <main class="main container">
+    <nav class="navigation ">
+      <div class="navigation__main">
+        Карлос Кастанеда
+      </div>
+      <ul class="navigation__sections">
         <li>
           <router-link to="/castaneda">Все цитаты</router-link>
         </li>
@@ -50,13 +52,31 @@ const generateRoute = (filter: string, type: string) => {
         </li>
       </ul>
     </nav>
+    <img src="src/assets/images/image_nav_page.jpg" class="main__image">
   </main>
 </template>
 
 <style lang="scss" scoped>
+.main {
+  display: flex;
+  justify-content: space-between;
+
+  &__image {
+    height: 500px;
+    margin-top: 40px;
+    width: auto;
+  }
+}
+
 .navigation {
   padding: 40px 0;
+  min-height: calc(100vh - 60px);
   cursor: pointer;
+
+  &__main {
+    margin-bottom: 10px;
+    cursor: context-menu;
+  }
 
   a {
     color: var(--color-main-text);
@@ -65,6 +85,39 @@ const generateRoute = (filter: string, type: string) => {
   li {
     list-style-type: none;
     padding-left: 20px;
+  }
+
+  &__sections {
+    li {
+      &:after {
+        content: '';
+        display: block;
+        width: 1px;
+        height: 8px;
+        left: 30px;
+        top: 4px;
+        margin-bottom: 4px;
+        background-color: var(--rolling-stone);
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+
+      ul {
+        margin-top: 4px;
+
+        li {
+          margin-bottom: 2px;
+
+          &:after {
+            display: none;
+          }
+        }
+      }
+    }
   }
 }
 

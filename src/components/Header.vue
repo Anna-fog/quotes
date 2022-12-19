@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import router from "@/router";
-import Search from '@/assets/icons/search.svg'
+import SearchIcon from '@/assets/icons/search.svg'
+import ClearIcon from '@/assets/icons/clear.svg'
 
 const filterValue = ref('')
 
@@ -10,11 +11,17 @@ const filterQuotes = () => {
     router.push('castaneda')
   } else {
     router.push({ path: 'castaneda', query: { filter: filterValue.value } })
+    filterValue.value = ''
   }
 }
 
-onMounted(() => {
+const clearFilter = () => {
+  filterValue.value = ''
   filterQuotes()
+}
+
+onMounted(() => {
+  filterValue.value && filterQuotes()
 })
 </script>
 
@@ -22,12 +29,15 @@ onMounted(() => {
   <header class="header">
     <div class="header__content container">
       <RouterLink to="/">
-        <img src="../assets/icons/circle.svg" class="header__logo" alt="circle">
+        <img src="../assets/images/enso.png" class="header__logo" alt="enso">
       </RouterLink>
       <div class="header__search">
-        <input v-model="filterValue" type="text">
+        <div class="header__input">
+          <input v-model="filterValue" @keyup.enter="filterQuotes" type="text">
+          <ClearIcon class="clear-icon" @click="clearFilter"/>
+        </div>
         <button @click="filterQuotes">
-          <Search class="icon" />
+          <SearchIcon class="search-icon" />
         </button>
       </div>
     </div>
@@ -37,7 +47,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .header {
-  width: 100vw;
   background-color: var(--rolling-stone);
 
   &__content {
@@ -46,17 +55,30 @@ onMounted(() => {
     justify-content: space-between;
     height: 60px;
     margin: 0 auto;
+
+    a {
+      display: flex;
+    }
   }
 
   &__logo {
     cursor: pointer;
+    transition: 14s transform;
+    width: 34px;
+
+    &:hover {
+      transform: scale(0.1) rotate(94deg);
+    }
   }
 
   &__search {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 20px;
+  }
+
+  &__input {
+    position: relative;
   }
 
   input {
@@ -73,7 +95,20 @@ onMounted(() => {
     }
   }
 
-  .icon {
+  .clear-icon {
+    position: absolute;
+    right: 8px;
+    top: 7px;
+    cursor: pointer;
+    color: var(--rolling-stone);
+    transition: .3s all;
+
+    &:hover {
+      color: var(--mine-shaft);
+    }
+  }
+
+  .search-icon {
     color: var(--rolling-stone);
     transition: .3s all;
   }
