@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { allQuotes } from "@/data/quotes";
 import { computed, onMounted, ref, watch } from "vue";
-import router from "@/router";
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
+import { useQuotesStore } from "@/stores";
+
+const store = useQuotesStore()
+
+const router = useRouter()
 
 const props = defineProps({
   pageName: String
 })
 
-const numberOfPictures = 26
-
+const numberOfPictures = 35
 const randomPicture = computed(() => {
-  return `/src/assets/images/image_${Math.floor(Math.random() * numberOfPictures) + 1}.jpg`
+  return `/src/assets/images/random/image_${Math.floor(Math.random() * numberOfPictures) + 1}.jpg`
 })
 
 const filter = computed(() => router.currentRoute.value.query.filter)
@@ -55,11 +59,13 @@ watch(filter, () => {
   filterAllQuotes()
 })
 
-
 onMounted(() => {
   filterAllQuotes()
 })
 
+onBeforeRouteLeave(() => {
+  store.filterValue = ''
+})
 </script>
 
 <template>
@@ -68,6 +74,7 @@ onMounted(() => {
       <div class="quotes__breadcramps">
         <router-link to="/">главная /</router-link>
         <a @click="handlePathClick">{{ currentPage }}</a>
+        <a v-if="filter" @click="(e) => {e.preventDefault()}" href="">/ {{ filter }}</a>
       </div>
       <ul>
         <li v-for="quote in quotes" :key="quote.id">
@@ -116,6 +123,7 @@ onMounted(() => {
     height: 500px;
     width: auto;
     margin-top: 50px;
+    border-radius: 4px;
     filter: saturate(0.7);
   }
 }

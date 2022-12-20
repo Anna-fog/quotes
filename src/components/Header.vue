@@ -1,27 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import router from "@/router";
+import { onMounted } from "vue";
+import { useRouter } from 'vue-router'
 import SearchIcon from '@/assets/icons/search.svg'
 import ClearIcon from '@/assets/icons/clear.svg'
+import { useQuotesStore } from "@/stores";
 
-const filterValue = ref('')
+const store = useQuotesStore()
+
+const router = useRouter()
 
 const filterQuotes = () => {
-  if (!filterValue.value) {
+  if (!store.filterValue) {
     router.push('castaneda')
   } else {
-    router.push({ path: 'castaneda', query: { filter: filterValue.value } })
-    filterValue.value = ''
+    router.push({ name: 'castaneda', query: { filter: store.filterValue } })
   }
 }
 
 const clearFilter = () => {
-  filterValue.value = ''
+  store.filterValue = ''
   filterQuotes()
 }
 
-onMounted(() => {
-  filterValue.value && filterQuotes()
+onMounted(async () => {
+  await router.isReady()
+  store.filterValue = router.currentRoute.value.query?.filter?.toString()
 })
 </script>
 
@@ -33,7 +36,7 @@ onMounted(() => {
       </RouterLink>
       <div class="header__search">
         <div class="header__input">
-          <input v-model="filterValue" @keyup.enter="filterQuotes" type="text">
+          <input v-model="store.filterValue" @keyup.enter="filterQuotes" type="text">
           <ClearIcon class="clear-icon" @click="clearFilter"/>
         </div>
         <button @click="filterQuotes">

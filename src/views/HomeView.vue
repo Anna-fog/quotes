@@ -62,9 +62,11 @@ const generateRoute = (filter: string, type: string) => {
   justify-content: space-between;
 
   &__image {
-    height: 500px;
     margin-top: 40px;
+    height: 500px;
     width: auto;
+    filter: saturate(0.7);
+    border-radius: 4px;
   }
 }
 
