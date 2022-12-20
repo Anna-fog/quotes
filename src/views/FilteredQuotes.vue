@@ -105,6 +105,10 @@ onBeforeRouteLeave(() => {
       justify-content: center;
       margin-top: 30px;
     }
+
+    &::selection {
+      background-color: var(--limes-spuce);
+    }
   }
 
   &__main {
@@ -122,8 +126,8 @@ onBeforeRouteLeave(() => {
   }
 
   &__image {
-    height: 500px;
     width: auto;
+    max-width: 350px;
     margin-top: 50px;
     border-radius: 4px;
     filter: saturate(0.7);
