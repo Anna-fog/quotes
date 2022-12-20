@@ -27,7 +27,9 @@ const filterAllQuotes = () => {
 
 const filterBooks = () => allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
 
-const filterThemes = () => allQuotes.filter(item => item.theme === router.currentRoute.value.params.id)
+const filterTags = () => allQuotes.filter(item => {
+  return item.tags.includes(router.currentRoute.value.params.id.toString().toLowerCase())
+})
 
 const chooseRandomQuote = () => [allQuotes[Math.floor(Math.random() * allQuotes.length)]];
 
@@ -43,7 +45,7 @@ const quotes = computed(() => {
   } else if (router.currentRoute.value.name === 'books') {
     return filterBooks()
   } else if (router.currentRoute.value.name === 'themes') {
-    return filterThemes()
+    return filterTags()
   } else if (router.currentRoute.value.name === 'random') {
     return chooseRandomQuote()
   } else {
