@@ -91,7 +91,7 @@ onBeforeRouteLeave(() => {
 
 <style lang="scss" scoped>
 .quotes {
-  padding: 40px 0;
+  margin: 40px auto;
   display: flex;
   justify-content: space-between;
 
@@ -126,8 +126,9 @@ onBeforeRouteLeave(() => {
   }
 
   &__image {
-    width: auto;
+    min-width: 330px;
     max-width: 350px;
+    height: fit-content;
     margin-top: 50px;
     border-radius: 4px;
     filter: saturate(0.7);

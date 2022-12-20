@@ -13,6 +13,7 @@ import Header from './components/Header.vue'
 <style scoped lang="scss">
 .app-wrapper {
   color: var(--color-main-text);
+  min-height: 100vh;
   background-color: var(--color-background);
 }
 </style>
