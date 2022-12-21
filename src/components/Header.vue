@@ -9,15 +9,15 @@ const store = useQuotesStore()
 
 const router = useRouter()
 
-const filterQuotes = () => {
-  if (!store.filterValue) {
-    router.push('castaneda')
-  } else {
-    router.push({ name: 'castaneda', query: { filter: store.filterValue } })
-  }
+const filterQuotes = async () => {
+  store.filterValue
+    ? router.push({ name: 'castaneda', query: { filter: store.filterValue } })
+    : router.push(router.currentRoute.value.path)
 }
 
 const clearFilter = () => {
+  if (!store.filterValue) return
+
   store.filterValue = ''
   filterQuotes()
 }

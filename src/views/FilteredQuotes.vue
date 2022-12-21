@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { allQuotes } from "@/data/quotes";
 import { computed, onMounted, ref, watch } from "vue";
-import { onBeforeRouteLeave, useRouter } from 'vue-router'
-import { useQuotesStore } from "@/stores";
-
-const store = useQuotesStore()
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
@@ -31,6 +28,11 @@ const filterTags = () => allQuotes.filter(item => {
   return item.tags.includes(router.currentRoute.value.params.id.toString().toLowerCase())
 })
 
+const nothingFoundResponse = computed(() => {
+  const numberOfWords = filter.value?.includes(' ') ? 'словами' : 'словом'
+  return `Ничего со ${numberOfWords} "${filter.value}" не найдено :(`
+})
+
 const chooseRandomQuote = () => [allQuotes[Math.floor(Math.random() * allQuotes.length)]];
 
 const currentPage = computed(() => {
@@ -40,7 +42,9 @@ const currentPage = computed(() => {
 })
 
 const quotes = computed(() => {
-  if (filteredQuotes.value?.length) {
+  if (filter.value && !filteredQuotes.value?.length) return
+
+  if (filter.value && filteredQuotes.value?.length) {
     return filteredQuotes.value
   } else if (router.currentRoute.value.name === 'books') {
     return filterBooks()
@@ -64,10 +68,6 @@ watch(filter, () => {
 onMounted(() => {
   filterAllQuotes()
 })
-
-onBeforeRouteLeave(() => {
-  store.filterValue = ''
-})
 </script>
 
 <template>
@@ -76,14 +76,15 @@ onBeforeRouteLeave(() => {
       <div class="quotes__breadcramps">
         <router-link to="/">главная /</router-link>
         <a @click="handlePathClick">{{ currentPage }}</a>
-        <a v-if="filter" @click="(e) => {e.preventDefault()}" href="">/ {{ filter }}</a>
+        <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }}</a>
       </div>
       <ul>
         <li v-for="quote in quotes" :key="quote.id">
           {{ quote.text }} <br>
-          {{ quote.details }}
+          <div> {{ quote.details }} </div>
         </li>
       </ul>
+      <div v-if="filter && !filteredQuotes?.length">{{ nothingFoundResponse }}</div>
     </div>
     <img class="quotes__image" :src="randomPicture" alt="image">
   </div>
@@ -109,6 +110,12 @@ onBeforeRouteLeave(() => {
     &::selection {
       background-color: var(--limes-spuce);
     }
+
+    div {
+      margin-top: 6px;
+      font-style: italic;
+      opacity: .7;
+    }
   }
 
   &__main {
@@ -127,7 +134,7 @@ onBeforeRouteLeave(() => {
 
   &__image {
     min-width: 330px;
-    max-width: 350px;
+    width: 330px;
     height: fit-content;
     margin-top: 50px;
     border-radius: 4px;

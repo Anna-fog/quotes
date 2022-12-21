@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { bookNames } from "@/data/bookNames";
 import { themes } from "@/data/themes";
+import { useQuotesStore } from "@/stores";
+
+const store = useQuotesStore()
 
 const showBooks = ref(false)
 const showThemes = ref(false)
@@ -14,9 +17,12 @@ const toggleThemesDropdown = () => {
   showThemes.value = !showThemes.value
 }
 
-const generateRoute = (filter: string, type: string) => {
-  return type === 'book' ? `/castaneda/books/${filter}` : `/castaneda/themes/${filter}`
-}
+const generateRoute = (filter: string, type: string) => `/castaneda/${type}/${filter}`
+
+onMounted(() => {
+  store.filterValue = ''
+})
+
 </script>
 
 <template>
@@ -37,7 +43,7 @@ const generateRoute = (filter: string, type: string) => {
           <ul v-show="showBooks">
             <li v-for="book in bookNames" :key="book.id">
               <router-link
-                :to="generateRoute(book.name, 'book')"
+                :to="generateRoute(book.name, 'books')"
                 :filter="book.name">{{ book.name }}</router-link>
             </li>
           </ul>
@@ -46,7 +52,7 @@ const generateRoute = (filter: string, type: string) => {
           По темам
           <ul v-show="showThemes">
             <li v-for="theme in themes" :key="theme.id">
-              <router-link :to="generateRoute(theme.name, 'theme')">{{ theme.name }}</router-link>
+              <router-link :to="generateRoute(theme.name, 'themes')">{{ theme.name }}</router-link>
             </li>
           </ul>
         </li>
