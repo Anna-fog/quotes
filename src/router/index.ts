@@ -32,10 +32,8 @@ const router = createRouter({
       props: { pageName: 'рандом' }
     },
     {
-      path: '/castaneda/:id',
-      name: 'filter',
-      component: () => import('../views/FilteredQuotes.vue'),
-      props: { pageName: 'фильтр' }
+      path: '/:catchAll(.*)*',
+      redirect: { name: 'home' },
     },
   ]
 })

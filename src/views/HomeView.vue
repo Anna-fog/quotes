@@ -73,6 +73,11 @@ onMounted(() => {
     width: auto;
     filter: saturate(0.7);
     border-radius: 4px;
+
+    @media (max-width: 720px) {
+      width: 40%;
+      height: fit-content;
+    }
   }
 }
 

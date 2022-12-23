@@ -2,8 +2,11 @@
 import { allQuotes } from "@/data/quotes";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from 'vue-router'
+import { useQuotesStore } from "@/stores";
 
 const router = useRouter()
+
+const store = useQuotesStore()
 
 const props = defineProps({
   pageName: String
@@ -58,7 +61,12 @@ const quotes = computed(() => {
 })
 
 const handlePathClick = () => {
-  router.currentRoute.value.name === 'random' && filterAllQuotes()
+  if (currentPage.value === 'все цитаты') {
+    router.push('/castaneda')
+    store.filterValue = ''
+  }
+
+  router.currentRoute.value.name === 'random' && location.reload()
 }
 
 watch(filter, () => {
@@ -72,6 +80,7 @@ onMounted(() => {
 
 <template>
   <div class="quotes container">
+    <img class="quotes__image" :src="randomPicture" alt="image">
     <div class="quotes__main">
       <div class="quotes__breadcramps">
         <router-link to="/">главная /</router-link>
@@ -85,8 +94,8 @@ onMounted(() => {
         </li>
       </ul>
       <div v-if="filter && !filteredQuotes?.length">{{ nothingFoundResponse }}</div>
+      <div v-else-if="!filter && !quotes?.length">Раздел в процессе разработки, скоро здесь что-нибудь появится :)</div>
     </div>
-    <img class="quotes__image" :src="randomPicture" alt="image">
   </div>
 </template>
 
@@ -95,6 +104,11 @@ onMounted(() => {
   margin: 40px auto;
   display: flex;
   justify-content: space-between;
+  flex-direction: row-reverse;
+
+  @media (max-width: 1180px) {
+    display: block;
+  }
 
   li {
     list-style: none;
@@ -120,6 +134,10 @@ onMounted(() => {
 
   &__main {
     padding-right: 40px;
+
+    @media (max-width: 1180px) {
+      padding-right: 0;
+    }
   }
 
   &__breadcramps {
@@ -139,6 +157,20 @@ onMounted(() => {
     margin-top: 50px;
     border-radius: 4px;
     filter: saturate(0.7);
+
+    @media (max-width: 1180px) {
+      float: right;
+      margin-bottom: 30px;
+      margin-left: 30px;
+      min-width: unset;
+      height: fit-content;
+      width: 40%;
+    }
+
+    @media (max-width: 560px) {
+      margin-bottom: 15px;
+      margin-left: 15px;
+    }
   }
 }
 </style>
