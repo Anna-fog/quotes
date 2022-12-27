@@ -58,7 +58,7 @@ onMounted(() => {
         </li>
       </ul>
     </nav>
-    <img src="src/assets/images/image_nav_page.jpg" class="main__image">
+    <img src="@/assets/images/image_nav_page.jpg" class="main__image">
   </main>
 </template>
 

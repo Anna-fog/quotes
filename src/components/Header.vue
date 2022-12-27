@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted } from "vue"
 import { useRouter } from 'vue-router'
-import SearchIcon from '@/assets/icons/search.svg'
-import ClearIcon from '@/assets/icons/clear.svg'
+import IconClear from '@/components/icons/IconClear.vue'
+import IconSearch from '@/components/icons/IconSearch.vue'
 import { useQuotesStore } from "@/stores";
 
 const store = useQuotesStore()
@@ -22,6 +22,12 @@ const clearFilter = () => {
   filterQuotes()
 }
 
+const vLowerCase = {
+  updated: (el: HTMLInputElement) => {
+    el.value = el.value.toLowerCase()
+  }
+}
+
 onMounted(async () => {
   await router.isReady()
   store.filterValue = router.currentRoute.value.query?.filter?.toString()
@@ -36,11 +42,11 @@ onMounted(async () => {
       </RouterLink>
       <div class="header__search">
         <div class="header__input">
-          <input v-model="store.filterValue" @keyup.enter="filterQuotes" type="text">
-          <ClearIcon class="clear-icon" @click="clearFilter"/>
+          <input v-model="store.filterValue" v-lower-case @keyup.enter="filterQuotes" type="text">
+          <IconClear class="clear-icon" @click="clearFilter"/>
         </div>
         <button @click="filterQuotes">
-          <SearchIcon class="search-icon" />
+          <IconSearch class="search-icon" />
         </button>
       </div>
     </div>

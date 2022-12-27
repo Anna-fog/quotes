@@ -3,6 +3,7 @@ import { allQuotes } from "@/data/quotes";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from 'vue-router'
 import { useQuotesStore } from "@/stores";
+import type { Quote } from "@/models/Quotes";
 
 const router = useRouter()
 
@@ -14,15 +15,16 @@ const props = defineProps({
 
 const numberOfPictures = 35
 const randomPicture = computed(() => {
-  return `/src/assets/images/random/image_${Math.floor(Math.random() * numberOfPictures) + 1}.jpg`
+  return `images/random/image_${Math.floor(Math.random() * numberOfPictures) + 1}.jpg`
 })
 
-const filter = computed(() => router.currentRoute.value.query.filter)
+const filter = computed(() => router.currentRoute?.value.query?.filter &&
+  router.currentRoute?.value.query?.filter.toString())
 
-const filteredQuotes = ref()
+const filteredQuotes = ref<Quote[] | null>(null)
 
 const filterAllQuotes = () => {
-  filteredQuotes.value = allQuotes.filter(item => item.text.includes(filter.value))
+  filteredQuotes.value = allQuotes.filter(item => filter.value && item.text.includes(filter.value?.toLowerCase()))
 }
 
 const filterBooks = () => allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
@@ -44,7 +46,7 @@ const currentPage = computed(() => {
   } else return props.pageName
 })
 
-const quotes = computed(() => {
+const quotes = computed((): Quote[] | undefined => {
   if (filter.value && !filteredQuotes.value?.length) return
 
   if (filter.value && filteredQuotes.value?.length) {
