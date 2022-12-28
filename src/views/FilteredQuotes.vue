@@ -3,6 +3,7 @@ import { allQuotes } from "@/data/quotes";
 import { computed, onMounted, ref, watch } from "vue";
 import { useRouter } from 'vue-router'
 import { useQuotesStore } from "@/stores";
+import { NUMBER_OF_IMAGES } from "@/constants";
 import type { Quote } from "@/models/Quotes";
 
 const router = useRouter()
@@ -10,21 +11,20 @@ const router = useRouter()
 const store = useQuotesStore()
 
 const props = defineProps({
-  pageName: String
+  pageName: String,
 })
 
-const numberOfPictures = 35
 const randomPicture = computed(() => {
-  return `images/random/image_${Math.floor(Math.random() * numberOfPictures) + 1}.jpg`
+  return `images/random/image_${Math.floor(Math.random() * NUMBER_OF_IMAGES) + 1}.jpg`
 })
 
 const filter = computed(() => router.currentRoute?.value.query?.filter &&
-  router.currentRoute?.value.query?.filter.toString())
+  router.currentRoute?.value.query?.filter.toString().toLowerCase())
 
 const filteredQuotes = ref<Quote[] | null>(null)
 
 const filterAllQuotes = () => {
-  filteredQuotes.value = allQuotes.filter(item => filter.value && item.text.includes(filter.value?.toLowerCase()))
+  filteredQuotes.value = allQuotes.filter(item => filter.value && item.text.includes(filter.value))
 }
 
 const filterBooks = () => allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
@@ -82,22 +82,26 @@ onMounted(() => {
 
 <template>
   <div class="quotes container">
-    <img class="quotes__image" :src="randomPicture" alt="image">
-    <div class="quotes__main">
-      <div class="quotes__breadcramps">
-        <router-link to="/">главная /</router-link>
-        <a @click="handlePathClick">{{ currentPage }}</a>
-        <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }} ({{ filteredQuotes.length }})</a>
+    <Transition appear>
+      <img class="quotes__image" :src="randomPicture" alt="image">
+    </Transition>
+    <Transition appear>
+      <div class="quotes__main">
+        <div class="quotes__breadcramps">
+          <router-link to="/">главная /</router-link>
+          <a @click="handlePathClick">{{ currentPage }}</a>
+          <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }} ({{ filteredQuotes.length }})</a>
+        </div>
+        <ul>
+          <li v-for="quote in quotes" :key="quote.id">
+            {{ quote.text }} <br>
+            <div> {{ quote.details }} </div>
+          </li>
+        </ul>
+        <div v-if="filter && !filteredQuotes?.length">{{ nothingFoundResponse }}</div>
+        <div v-else-if="!filter && !quotes?.length">Раздел в процессе разработки, скоро здесь что-нибудь появится :)</div>
       </div>
-      <ul>
-        <li v-for="quote in quotes" :key="quote.id">
-          {{ quote.text }} <br>
-          <div> {{ quote.details }} </div>
-        </li>
-      </ul>
-      <div v-if="filter && !filteredQuotes?.length">{{ nothingFoundResponse }}</div>
-      <div v-else-if="!filter && !quotes?.length">Раздел в процессе разработки, скоро здесь что-нибудь появится :)</div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -161,7 +165,7 @@ onMounted(() => {
     width: 330px;
     height: fit-content;
     margin-top: 50px;
-    border-radius: 4px;
+    border-radius: 2px;
     filter: saturate(0.7);
 
     @media (max-width: 1180px) {

@@ -72,11 +72,11 @@ onMounted(async () => {
 
   &__logo {
     cursor: pointer;
-    transition: 14s transform;
+    transition: 9s transform ease;
     width: 34px;
 
     &:hover {
-      transform: scale(0.1) rotate(94deg);
+      transform: scale(0.1) rotate(-240deg);
     }
     
     @media (max-width: 560px) {
@@ -99,7 +99,7 @@ onMounted(async () => {
   input {
     height: 24px;
     width: 220px;
-    border-radius: 4px 0 0 4px;
+    border-radius: 2px 0 0 2px;
     border: none;
     padding: 4px 26px 4px 8px;
     font-size: 14px;
@@ -128,13 +128,15 @@ onMounted(async () => {
     transition: .3s all;
 
     &:hover {
-      color: var(--mine-shaft);
+      color: var(--shuttle-gray);
+      transform: scale(1.2);
     }
 
     @media (max-width: 560px) {
       top: 7px;
       width: 16px;
       height: 16px;
+      transform: none;
     }
   }
 
@@ -153,7 +155,7 @@ onMounted(async () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 2px 2px 0;
     border: none;
     margin-left: 2px;
     padding: 4px;

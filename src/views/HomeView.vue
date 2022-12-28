@@ -27,38 +27,43 @@ onMounted(() => {
 
 <template>
   <main class="main container">
-    <nav class="navigation">
-      <div class="navigation__main">
-        Карлос Кастанеда
-      </div>
-      <ul class="navigation__sections">
-        <li>
-          <router-link to="/castaneda">Все цитаты</router-link>
-        </li>
-        <li>
-          <router-link to="/castaneda/random">Рандом</router-link>
-        </li>
-        <li @click="toggleBooksDropdown" class="navigation__nested-li">
-          По книгам
-          <ul v-show="showBooks">
-            <li v-for="book in bookNames" :key="book.id">
-              <router-link
-                :to="generateRoute(book.name, 'books')"
-                :filter="book.name">{{ book.name }}</router-link>
-            </li>
-          </ul>
-        </li>
-        <li @click="toggleThemesDropdown" class="navigation__nested-li">
-          По темам
-          <ul v-show="showThemes">
-            <li v-for="theme in themes" :key="theme.id">
-              <router-link :to="generateRoute(theme.name, 'themes')">{{ theme.name }}</router-link>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-    <img src="@/assets/images/image_nav_page.jpg" class="main__image">
+    <Transition appear>
+      <nav class="navigation">
+        <div class="navigation__main">
+          Карлос Кастанеда
+        </div>
+        <ul class="navigation__sections">
+          <li>
+            <router-link to="/castaneda">Все цитаты</router-link>
+          </li>
+          <li>
+            <router-link to="/castaneda/random">Рандом</router-link>
+          </li>
+          <li @click="toggleBooksDropdown" class="navigation__nested-li">
+            По книгам
+            <ul v-show="showBooks">
+              <li v-for="book in bookNames" :key="book.id">
+                <router-link
+                  :to="generateRoute(book.name, 'books')"
+                  :filter="book.name">{{ book.name }}</router-link>
+              </li>
+            </ul>
+          </li>
+          <li @click="toggleThemesDropdown" class="navigation__nested-li">
+            По темам
+            <ul v-show="showThemes">
+              <li v-for="theme in themes" :key="theme.id">
+                <router-link :to="generateRoute(theme.name, 'themes')">{{ theme.name }}</router-link>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </Transition>
+    <Transition appear>
+      <img src="@/assets/images/image_nav_page.jpg" class="main__image">
+    </Transition>
+
   </main>
 </template>
 
@@ -72,7 +77,7 @@ onMounted(() => {
     height: 500px;
     width: auto;
     filter: saturate(0.7);
-    border-radius: 4px;
+    border-radius: 2px;
 
     @media (max-width: 720px) {
       width: 40%;
@@ -88,7 +93,7 @@ onMounted(() => {
 
   @media (max-width: 560px) {
     font-size: 16px;
-    line-height: 26px;
+    line-height: 24px;
   }
 
   &__main {
@@ -103,14 +108,6 @@ onMounted(() => {
   li {
     list-style-type: none;
     padding-left: 20px;
-  }
-
-  &__nested-li {
-    li {
-      list-style-type: circle;
-      margin-left: 30px;
-      padding-left: 0;
-    }
   }
 
   &__sections {
@@ -131,17 +128,22 @@ onMounted(() => {
           display: none;
         }
       }
+    }
+  }
 
-      ul {
-        margin-top: 4px;
+  &__nested-li {
+    ul {
+      margin-top: 4px;
+    }
 
-        li {
-          margin-bottom: 2px;
+    li {
+      list-style-type: circle;
+      margin-left: 30px;
+      padding-left: 0;
+      margin-top: 4px;
 
-          &:after {
-            display: none;
-          }
-        }
+      &:after {
+        display: none;
       }
     }
   }

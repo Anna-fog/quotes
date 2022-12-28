@@ -1,5 +1,18 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { NUMBER_OF_IMAGES } from "@/constants";
+
+const loadImages = () => {
+  const images: string[] = []
+  for (let i = 1; i <= NUMBER_OF_IMAGES; i++) {
+    images.push(`images/random/image_${i}.jpg`)
+  }
+
+  images.map((item: any, i) => {
+    const img = new Image();
+    img.src = images[i];
+  });
+}
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -13,7 +26,7 @@ const router = createRouter({
       path: '/castaneda',
       name: 'castaneda',
       component: () => import('../views/FilteredQuotes.vue'),
-      props: { pageName: 'все цитаты' }
+      props: { pageName: 'все цитаты' },
     },
     {
       path: '/castaneda/books/:id',
@@ -36,6 +49,11 @@ const router = createRouter({
       redirect: { name: 'home' },
     },
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  await loadImages()
+  next()
 })
 
 export default router
