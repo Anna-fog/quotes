@@ -94,7 +94,7 @@ onMounted(() => {
         </div>
         <ul>
           <li v-for="quote in quotes" :key="quote.id">
-            {{ quote.text }} <br>
+            <pre>{{ quote.text }}</pre>
             <div> {{ quote.details }} </div>
           </li>
         </ul>
@@ -119,6 +119,13 @@ onMounted(() => {
   li {
     list-style: none;
     margin-bottom: 20px;
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+      Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    }
 
     @media (max-width: 560px) {
       font-size: 16px;
