@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
   <main class="main container">
-    <nav class="navigation ">
+    <nav class="navigation">
       <div class="navigation__main">
         Карлос Кастанеда
       </div>
@@ -38,7 +38,7 @@ onMounted(() => {
         <li>
           <router-link to="/castaneda/random">Рандом</router-link>
         </li>
-        <li @click="toggleBooksDropdown">
+        <li @click="toggleBooksDropdown" class="navigation__nested-li">
           По книгам
           <ul v-show="showBooks">
             <li v-for="book in bookNames" :key="book.id">
@@ -48,7 +48,7 @@ onMounted(() => {
             </li>
           </ul>
         </li>
-        <li @click="toggleThemesDropdown">
+        <li @click="toggleThemesDropdown" class="navigation__nested-li">
           По темам
           <ul v-show="showThemes">
             <li v-for="theme in themes" :key="theme.id">
@@ -86,6 +86,11 @@ onMounted(() => {
   min-height: calc(100vh - 60px);
   cursor: pointer;
 
+  @media (max-width: 560px) {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
   &__main {
     margin-bottom: 10px;
     cursor: context-menu;
@@ -98,6 +103,14 @@ onMounted(() => {
   li {
     list-style-type: none;
     padding-left: 20px;
+  }
+
+  &__nested-li {
+    li {
+      list-style-type: circle;
+      margin-left: 30px;
+      padding-left: 0;
+    }
   }
 
   &__sections {

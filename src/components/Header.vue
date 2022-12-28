@@ -43,7 +43,7 @@ onMounted(async () => {
       <div class="header__search">
         <div class="header__input">
           <input v-model="store.filterValue" v-lower-case @keyup.enter="filterQuotes" type="text">
-          <IconClear class="clear-icon" @click="clearFilter"/>
+          <IconClear v-if="store.filterValue" class="clear-icon" @click="clearFilter"/>
         </div>
         <button @click="filterQuotes">
           <IconSearch class="search-icon" />
@@ -78,6 +78,12 @@ onMounted(async () => {
     &:hover {
       transform: scale(0.1) rotate(94deg);
     }
+    
+    @media (max-width: 560px) {
+      &:hover {
+        transform: none;
+      }
+    }
   }
 
   &__search {
@@ -95,19 +101,28 @@ onMounted(async () => {
     width: 220px;
     border-radius: 4px 0 0 4px;
     border: none;
-    padding: 4px 8px;
+    padding: 4px 26px 4px 8px;
+    font-size: 14px;
     color: var(--mine-shaft);
     background-color: var(--submarine);
 
     &:focus-visible {
       outline: 2px solid var(--mine-shaft);
     }
+
+    @media (max-width: 560px) {
+      height: 30px;
+      padding-right: 32px;
+      font-size: 16px;
+    }
   }
 
   .clear-icon {
     position: absolute;
+    width: 12px;
+    height: 12px;
     right: 8px;
-    top: 7px;
+    top: 6px;
     cursor: pointer;
     color: var(--rolling-stone);
     transition: .3s all;
@@ -115,15 +130,29 @@ onMounted(async () => {
     &:hover {
       color: var(--mine-shaft);
     }
+
+    @media (max-width: 560px) {
+      top: 7px;
+      width: 16px;
+      height: 16px;
+    }
   }
 
   .search-icon {
     color: var(--rolling-stone);
     transition: .3s all;
+
+    @media (max-width: 560px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   button {
     height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 0 4px 4px 0;
     border: none;
     margin-left: 2px;
@@ -135,8 +164,20 @@ onMounted(async () => {
     &:hover {
       background-color: var(--gray-chateau);
 
-      .icon {
+      .search-icon {
         color: var(--shuttle-gray);
+      }
+    }
+
+    @media (max-width: 560px) {
+      height: 30px;
+
+      &:hover {
+        background-color: var(--submarine);
+
+        .search-icon {
+          color: var(--rolling-stone);
+        }
       }
     }
   }

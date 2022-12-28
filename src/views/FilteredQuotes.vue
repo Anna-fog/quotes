@@ -87,7 +87,7 @@ onMounted(() => {
       <div class="quotes__breadcramps">
         <router-link to="/">главная /</router-link>
         <a @click="handlePathClick">{{ currentPage }}</a>
-        <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }}</a>
+        <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }} ({{ filteredQuotes.length }})</a>
       </div>
       <ul>
         <li v-for="quote in quotes" :key="quote.id">
@@ -115,6 +115,10 @@ onMounted(() => {
   li {
     list-style: none;
     margin-bottom: 20px;
+
+    @media (max-width: 560px) {
+      font-size: 16px;
+    }
 
     &:after {
       content: '***';
