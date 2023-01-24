@@ -32,11 +32,13 @@ const router = createRouter({
       path: '/castaneda/books/:id',
       name: 'books',
       component: () => import('../views/FilteredQuotes.vue'),
+      meta: { title: 'quotes' }
     },
     {
       path: '/castaneda/themes/:id',
       name: 'themes',
       component: () => import('../views/FilteredQuotes.vue'),
+      meta: { title: 'quotes' }
     },
     {
       path: '/castaneda/random',
@@ -52,6 +54,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  document.title = to.meta.title ? `${to.params.id}, К.Кастанеда` : 'quotes'
   await loadImages()
   next()
 })
