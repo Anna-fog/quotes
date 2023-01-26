@@ -77,7 +77,7 @@ onMounted(() => {
     height: 500px;
     width: auto;
     filter: saturate(0.7);
-    border-radius: 2px;
+    border-radius: 4px;
 
     @media (max-width: 720px) {
       width: 40%;
@@ -92,8 +92,8 @@ onMounted(() => {
   cursor: pointer;
 
   @media (max-width: 560px) {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 17px;
+    line-height: 22px;
   }
 
   &__main {
@@ -117,10 +117,11 @@ onMounted(() => {
         display: block;
         width: 1px;
         height: 8px;
+        position: relative;
         left: 30px;
         top: 4px;
         margin-bottom: 4px;
-        background-color: var(--rolling-stone);
+        background-color: var(--color-section-separator);
       }
 
       &:last-child {

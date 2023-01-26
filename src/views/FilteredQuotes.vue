@@ -128,7 +128,8 @@ onMounted(() => {
     }
 
     @media (max-width: 560px) {
-      font-size: 16px;
+      font-size: 17px;
+      line-height: 22px;
     }
 
     &:after {
@@ -139,7 +140,7 @@ onMounted(() => {
     }
 
     &::selection {
-      background-color: var(--limes-spuce);
+      background-color: var(--color-selection);
     }
 
     div {
@@ -162,7 +163,7 @@ onMounted(() => {
 
     a {
       margin-right: 6px;
-      color: rgba(167, 186, 190, 0.6);
+      color: var(--color-light-text);
       cursor: pointer;
     }
   }
@@ -172,7 +173,7 @@ onMounted(() => {
     width: 330px;
     height: fit-content;
     margin-top: 50px;
-    border-radius: 2px;
+    border-radius: 4px;
     filter: saturate(0.7);
 
     @media (max-width: 1180px) {

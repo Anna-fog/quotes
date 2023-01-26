@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
 import { useRouter } from 'vue-router'
+import { useDark, useToggle } from "@vueuse/core";
 import IconClear from '@/components/icons/IconClear.vue'
 import IconSearch from '@/components/icons/IconSearch.vue'
+import IconSun from '@/components/icons/IconSun.vue'
 import { useQuotesStore } from "@/stores";
 
 const store = useQuotesStore()
 
 const router = useRouter()
+
+const isDark = useDark({
+  selector: 'body',
+  attribute: 'color-scheme',
+  valueDark: 'dark',
+  valueLight: 'light',
+})
+const toggleDark = useToggle(isDark)
 
 const filterQuotes = async () => {
   store.filterValue
@@ -28,9 +38,18 @@ const vLowerCase = {
   }
 }
 
+const setInitialDarkMode = () => {
+  toggleDark()
+  localStorage.setItem('initial-mode', 'dark-mode')
+}
+
 onMounted(async () => {
   await router.isReady()
   store.filterValue = router.currentRoute.value.query?.filter?.toString()
+
+  if (!localStorage.getItem('initial-mode')) {
+    setInitialDarkMode()
+  }
 })
 </script>
 
@@ -40,14 +59,19 @@ onMounted(async () => {
       <RouterLink to="/">
         <img src="../assets/images/enso.png" class="header__logo" alt="enso">
       </RouterLink>
-      <div class="header__search">
-        <div class="header__input">
-          <input v-model="store.filterValue" v-lower-case @keyup.enter="filterQuotes" type="text">
-          <IconClear v-if="store.filterValue" class="clear-icon" @click="clearFilter"/>
+      <div class="header__actions">
+        <div class="header__search">
+          <div class="header__input">
+            <input v-model="store.filterValue" v-lower-case @keyup.enter="filterQuotes" type="text">
+            <IconClear v-if="store.filterValue" class="clear-icon" @click="clearFilter"/>
+          </div>
+          <button @click="filterQuotes">
+            <IconSearch class="search-icon" />
+          </button>
         </div>
-        <button @click="filterQuotes">
-          <IconSearch class="search-icon" />
-        </button>
+        <div :class="['sun-icon', {'sun-icon_sunset': isDark}]" @click="toggleDark()">
+          <IconSun class="sun-icon__svg"></IconSun>
+        </div>
       </div>
     </div>
   </header>
@@ -56,7 +80,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .header {
-  background-color: var(--rolling-stone);
+  background-color: var(--color-header-background);
 
   &__content {
     display: flex;
@@ -86,6 +110,16 @@ onMounted(async () => {
     }
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @media (max-width: 560px) {
+      gap: 15px;
+    }
+  }
+
   &__search {
     display: flex;
     justify-content: center;
@@ -94,26 +128,27 @@ onMounted(async () => {
 
   &__input {
     position: relative;
-  }
 
-  input {
-    height: 24px;
-    width: 220px;
-    border-radius: 2px 0 0 2px;
-    border: none;
-    padding: 4px 26px 4px 8px;
-    font-size: 14px;
-    color: var(--mine-shaft);
-    background-color: var(--submarine);
+    input {
+      height: 24px;
+      width: 220px;
+      border-radius: 2px 0 0 2px;
+      border: none;
+      padding: 4px 26px 4px 8px;
+      font-size: 14px;
+      color: var(--color-input);
+      background-color: var(--color-input-background);
 
-    &:focus-visible {
-      outline: 2px solid var(--mine-shaft);
-    }
+      &:focus-visible {
+        outline: 2px solid var(--color-input);
+      }
 
-    @media (max-width: 560px) {
-      height: 30px;
-      padding-right: 32px;
-      font-size: 16px;
+      @media (max-width: 560px) {
+        width: 200px;
+        height: 30px;
+        padding-right: 32px;
+        font-size: 16px;
+      }
     }
   }
 
@@ -124,11 +159,11 @@ onMounted(async () => {
     right: 8px;
     top: 6px;
     cursor: pointer;
-    color: var(--rolling-stone);
+    color: var(--color-icon);
     transition: .3s all;
 
     &:hover {
-      color: var(--shuttle-gray);
+      color: var(--color-icon-hover);
       transform: scale(1.2);
     }
 
@@ -141,12 +176,60 @@ onMounted(async () => {
   }
 
   .search-icon {
-    color: var(--rolling-stone);
+    color: var(--color-icon);
     transition: .3s all;
 
     @media (max-width: 560px) {
       width: 18px;
       height: 18px;
+    }
+  }
+
+  .sun-icon {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+
+    @media (max-width: 1240px) {
+      position: relative;
+      right: 0;
+    }
+
+    &__svg {
+      position: relative;
+      top: 2px;
+      color: var(--color-sun-background);
+      transition: .6s all ease;
+
+      &:hover {
+        transform: rotate(180deg);
+
+      }
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 24px;
+      height: 14px;
+      background-color: transparent;
+      border-top: 1px solid transparent;
+      bottom: -10px;
+      transition: .6s bottom;
+    }
+
+    &_sunset {
+      &:after {
+        background-color: var(--color-header-background);
+        border-top: 1px solid var(--mine-shaft);
+        bottom: -3px;
+      }
+
+      .sun-icon__svg {
+        top: 5px;
+        color: var(--color-sun-background);
+      }
     }
   }
 
@@ -159,15 +242,15 @@ onMounted(async () => {
     border: none;
     margin-left: 2px;
     padding: 4px;
-    background-color: var(--submarine);
+    background-color: var(--color-header-button);
     cursor: pointer;
     transition: .3s all;
 
     &:hover {
-      background-color: var(--gray-chateau);
+      background-color: var(--color-header-button-hover);
 
       .search-icon {
-        color: var(--shuttle-gray);
+        color: var(--color-icon-hover);
       }
     }
 
@@ -175,10 +258,10 @@ onMounted(async () => {
       height: 30px;
 
       &:hover {
-        background-color: var(--submarine);
+        background-color: var(--color-header-button);
 
         .search-icon {
-          color: var(--rolling-stone);
+          color: var(--color-icon);
         }
       }
     }

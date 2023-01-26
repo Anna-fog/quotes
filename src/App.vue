@@ -32,10 +32,6 @@ const router = useRouter()
   width: 100px;
   height: auto;
   animation: wind ease-in-out 5s;
-
-  @media (max-width: 560px) {
-    bottom: 50px;
-  }
 }
 
 @keyframes wind {
