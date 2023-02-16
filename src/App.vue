@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import Header from './components/Header.vue'
-import { useRouter } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
+import Header from './components/Header/Header.vue'
+import TheTumbleweed from '@/components/TheTumbleweed.vue'
 
 const router = useRouter()
 </script>
@@ -10,11 +10,7 @@ const router = useRouter()
   <div class="app-wrapper">
     <Header/>
     <RouterView/>
-    <img
-      v-if="router.currentRoute.value.name === 'random'"
-      src="@/assets/images/tumbleweed.png"
-      class="tumbleweed"
-      alt="">
+    <the-tumbleweed v-if="router.currentRoute.value.name?.includes('random')"/>
   </div>
 </template>
 
@@ -22,30 +18,7 @@ const router = useRouter()
 .app-wrapper {
   color: var(--color-main-text);
   min-height: 100vh;
+  padding-bottom: 30px;
   background-color: var(--color-background);
-}
-
-.tumbleweed {
-  position: absolute;
-  left: -100px;
-  bottom: 0;
-  width: 100px;
-  height: auto;
-  animation: wind ease-in-out 5s;
-}
-
-@keyframes wind {
-  0% {
-    left: -100px;
-    transform: rotate(0);
-  }
-  99% {
-    display: block;
-  }
-  100% {
-    left: calc(100% + 100px);
-    transform: rotate(380deg);
-    display: none;
-  }
 }
 </style>

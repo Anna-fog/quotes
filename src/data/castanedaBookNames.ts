@@ -1,4 +1,4 @@
-export const bookNames = [
+export const castanedaBookNames = [
   { name: 'Учение дона Хуана', id: 1, year: 1968 },
   { name: 'Отдельная реальность', id: 2, year: 1971 },
   { name: 'Путешествие в Икстлан', id: 3, year: 1972 },

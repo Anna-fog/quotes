@@ -1,4 +1,4 @@
-export const themes = [
+export const castanedaTags = [
   { name: 'Безупречность', id: 1 },
   { name: 'Контролируемая глупость', id: 2 },
   { name: 'Остановка мира', id: 3 },

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { allQuotes } from "@/data/quotes";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, watch } from "vue";
 import { useRouter } from 'vue-router'
+
 import { useQuotesStore } from "@/stores";
-import { NUMBER_OF_IMAGES } from "@/constants";
-import type { Quote } from "@/models/Quotes";
+
+import QuotesList from '@/components/QuotesList.vue'
+import BreadCrumbs from '@/components/Navigation/BreadCrumbs.vue'
+import RandomImage from '@/components/RandomImage.vue'
 
 const router = useRouter()
 
@@ -14,92 +16,29 @@ const props = defineProps({
   pageName: String,
 })
 
-const randomPicture = computed(() => {
-  return `images/random/image_${Math.floor(Math.random() * NUMBER_OF_IMAGES) + 1}.jpg`
-})
+const authorName = computed(() => router.currentRoute.value.meta.author)
 
-const filter = computed(() => router.currentRoute?.value.query?.filter &&
-  router.currentRoute?.value.query?.filter.toString().toLowerCase())
+const filter = computed(() => router.currentRoute?.value.query?.filter ?
+  router.currentRoute?.value.query?.filter.toString().toLowerCase() : null)
 
-const filteredQuotes = ref<Quote[] | null>(null)
-
-const filterAllQuotes = () => {
-  filteredQuotes.value = allQuotes.filter(item => filter.value && item.text.includes(filter.value))
-}
-
-const filterBooks = () => allQuotes.filter(item => item.bookName === router.currentRoute.value.params.id)
-
-const filterTags = () => allQuotes.filter(item => {
-  return item.tags.includes(router.currentRoute.value.params.id.toString().toLowerCase())
-})
-
-const nothingFoundResponse = computed(() => {
-  const numberOfWords = filter.value?.includes(' ') ? 'словами' : 'словом'
-  return `Ничего со ${numberOfWords} "${filter.value}" не найдено :(`
-})
-
-const chooseRandomQuote = () => [allQuotes[Math.floor(Math.random() * allQuotes.length)]];
-
-const currentPage = computed(() => {
-  if (router.currentRoute.value.name === 'books' || router.currentRoute.value.name === 'themes') {
-    return router.currentRoute.value.params.id
-  } else return props.pageName
-})
-
-const quotes = computed((): Quote[] | undefined => {
-  if (filter.value && !filteredQuotes.value?.length) return
-
-  if (filter.value && filteredQuotes.value?.length) {
-    return filteredQuotes.value
-  } else if (router.currentRoute.value.name === 'books') {
-    return filterBooks()
-  } else if (router.currentRoute.value.name === 'themes') {
-    return filterTags()
-  } else if (router.currentRoute.value.name === 'random') {
-    return chooseRandomQuote()
-  } else {
-    return allQuotes
-  }
-})
-
-const handlePathClick = () => {
-  if (currentPage.value === 'все цитаты') {
-    router.push('/castaneda')
-    store.filterValue = ''
-  }
-
-  router.currentRoute.value.name === 'random' && location.reload()
-}
+const quotes = computed(() => store.quotesToShow(filter.value, router.currentRoute.value, authorName.value as string))
 
 watch(filter, () => {
-  filterAllQuotes()
-})
-
-onMounted(() => {
-  filterAllQuotes()
+  store.filterQuotes(authorName.value as string)
 })
 </script>
 
 <template>
   <div class="quotes container">
     <Transition appear>
-      <img class="quotes__image" :src="randomPicture" alt="image">
+      <random-image/>
     </Transition>
+
     <Transition appear>
       <div class="quotes__main">
-        <div class="quotes__breadcramps">
-          <router-link to="/">главная /</router-link>
-          <a @click="handlePathClick">{{ currentPage }}</a>
-          <a v-if="filter && filteredQuotes?.length" @click.prevent href="">/ {{ filter }} ({{ filteredQuotes.length }})</a>
-        </div>
-        <ul>
-          <li v-for="quote in quotes" :key="quote.id">
-            <pre>{{ quote.text }}</pre>
-            <div> {{ quote.details }} </div>
-          </li>
-        </ul>
-        <div v-if="filter && !filteredQuotes?.length">{{ nothingFoundResponse }}</div>
-        <div v-else-if="!filter && !quotes?.length">Раздел в процессе разработки, скоро здесь что-нибудь появится :)</div>
+        <bread-crumbs :filter="filter" :pageName="props.pageName"/>
+
+        <quotes-list :quotes="quotes" :filter="filter"/>
       </div>
     </Transition>
   </div>
@@ -116,78 +55,11 @@ onMounted(() => {
     display: block;
   }
 
-  li {
-    list-style: none;
-    margin-bottom: 20px;
-
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-      Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    @media (max-width: 560px) {
-      font-size: 17px;
-      line-height: 22px;
-    }
-
-    &:after {
-      content: '***';
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
-    }
-
-    &::selection {
-      background-color: var(--color-selection);
-    }
-
-    div {
-      margin-top: 6px;
-      font-style: italic;
-      opacity: .7;
-    }
-  }
-
   &__main {
     padding-right: 40px;
 
     @media (max-width: 1180px) {
       padding-right: 0;
-    }
-  }
-
-  &__breadcramps {
-    margin-bottom: 30px;
-
-    a {
-      margin-right: 6px;
-      color: var(--color-light-text);
-      cursor: pointer;
-    }
-  }
-
-  &__image {
-    min-width: 330px;
-    width: 330px;
-    height: fit-content;
-    margin-top: 50px;
-    border-radius: 4px;
-    filter: saturate(0.7);
-
-    @media (max-width: 1180px) {
-      float: right;
-      margin-bottom: 30px;
-      margin-left: 30px;
-      min-width: unset;
-      height: fit-content;
-      width: 40%;
-    }
-
-    @media (max-width: 560px) {
-      margin-bottom: 15px;
-      margin-left: 15px;
     }
   }
 }

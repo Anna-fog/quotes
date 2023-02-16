@@ -1,65 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { bookNames } from "@/data/bookNames";
-import { themes } from "@/data/themes";
-import { useQuotesStore } from "@/stores";
+import { computed } from "vue";
+import AuthorsMenu from '@/components/Navigation/AuthorsMenu.vue'
 
-const store = useQuotesStore()
+import { allQuotes } from "@/data/quotes";
 
-const showBooks = ref(false)
-const showThemes = ref(false)
-
-const toggleBooksDropdown = () => {
-  showBooks.value = !showBooks.value
-}
-
-const toggleThemesDropdown = () => {
-  showThemes.value = !showThemes.value
-}
-
-const generateRoute = (filter: string, type: string) => `/castaneda/${type}/${filter}`
-
-onMounted(() => {
-  store.filterValue = ''
-})
+const authors = computed(() => allQuotes.authors)
 
 </script>
 
 <template>
   <main class="main container">
     <Transition appear>
-      <nav class="navigation">
-        <div class="navigation__main">
-          Карлос Кастанеда
-        </div>
-        <ul class="navigation__sections">
-          <li>
-            <router-link to="/castaneda">Все цитаты</router-link>
-          </li>
-          <li>
-            <router-link to="/castaneda/random">Рандом</router-link>
-          </li>
-          <li @click="toggleBooksDropdown" class="navigation__nested-li">
-            По книгам
-            <ul v-show="showBooks">
-              <li v-for="book in bookNames" :key="book.id">
-                <router-link
-                  :to="generateRoute(book.name, 'books')"
-                  :filter="book.name">{{ book.name }}</router-link>
-              </li>
-            </ul>
-          </li>
-          <li @click="toggleThemesDropdown" class="navigation__nested-li">
-            По темам
-            <ul v-show="showThemes">
-              <li v-for="theme in themes" :key="theme.id">
-                <router-link :to="generateRoute(theme.name, 'themes')">{{ theme.name }}</router-link>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
+      <div>
+        <authors-menu v-for="author in authors" :key="author.id" :author="author"/>
+      </div>
     </Transition>
+
     <Transition appear>
       <img src="@/assets/images/image_nav_page.jpg" class="main__image">
     </Transition>
@@ -85,69 +41,4 @@ onMounted(() => {
     }
   }
 }
-
-.navigation {
-  padding: 40px 0;
-  min-height: calc(100vh - 60px);
-  cursor: pointer;
-
-  @media (max-width: 560px) {
-    font-size: 17px;
-    line-height: 22px;
-  }
-
-  &__main {
-    margin-bottom: 10px;
-    cursor: context-menu;
-  }
-
-  a {
-    color: var(--color-main-text);
-  }
-
-  li {
-    list-style-type: none;
-    padding-left: 20px;
-  }
-
-  &__sections {
-    li {
-      &:after {
-        content: '';
-        display: block;
-        width: 1px;
-        height: 8px;
-        position: relative;
-        left: 30px;
-        top: 4px;
-        margin-bottom: 4px;
-        background-color: var(--color-section-separator);
-      }
-
-      &:last-child {
-        &:after {
-          display: none;
-        }
-      }
-    }
-  }
-
-  &__nested-li {
-    ul {
-      margin-top: 4px;
-    }
-
-    li {
-      list-style-type: circle;
-      margin-left: 30px;
-      padding-left: 0;
-      margin-top: 4px;
-
-      &:after {
-        display: none;
-      }
-    }
-  }
-}
-
 </style>
