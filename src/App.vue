@@ -12,7 +12,7 @@ const showTumbleweed = computed(() => {
 })
 
 const showOakLeaf= computed(() => {
-  return router.currentRoute.value.name === 'nisargadatta random'
+  return router.currentRoute.value.name === 'nisargadatta random' || router.currentRoute.value.name === 'all random'
 })
 </script>
 
