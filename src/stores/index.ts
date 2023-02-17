@@ -27,7 +27,8 @@ export const useQuotesStore = defineStore('quotes',  {
 
     filterQuotes(authorName: string = '') {
       if (authorName) {
-        this.filteredQuotes = this.getAuthor(authorName)?.quotes.filter(item =>
+        const authorsQuotes = this.getAuthor(authorName)?.quotes
+        this.filteredQuotes = authorsQuotes && authorsQuotes.filter(item =>
           this.filterValue && item.text.toLowerCase().includes(this.filterValue.toLowerCase()))
       } else {
         this.filteredQuotes = this.allAuthorsQuotes.filter((item: Partial<Quote>) =>
@@ -52,11 +53,17 @@ export const useQuotesStore = defineStore('quotes',  {
       return [this.getAuthor(authorName)?.quotes[Math.floor(Math.random() * numberOfQuotes)]]
     },
 
+    chooseRandomQuoteFromAllAuthors() {
+      return [this.allAuthorsQuotes[Math.floor(Math.random() * this.allAuthorsQuotes.length)]]
+    },
+
     quotesToShow(filter: string | null, route: any, authorName: string) {
       if (filter && !this.filteredQuotes?.length) return []
 
       if (filter && this.filteredQuotes?.length) {
         return this.filteredQuotes
+      } else if (route.name === 'all random') {
+        return this.chooseRandomQuoteFromAllAuthors()
       } else if (route.name.includes('books')) {
         return this.filterBooks(route.params.id, authorName)
       } else if (route.name.includes('themes')) {

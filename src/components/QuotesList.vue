@@ -22,7 +22,7 @@ const nothingFoundResponse = computed(() => {
   return `Ничего со ${numberOfWords} "${filter.value}" не найдено`
 })
 
-onMounted( () => {
+onMounted(() => {
   store.filterValue = filter.value
   store.filterQuotes(authorName.value as string)
 })

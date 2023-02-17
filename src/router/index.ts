@@ -24,6 +24,13 @@ const router = createRouter({
       meta: { title: 'quotes' },
     },
     {
+      path: '/random',
+      name: 'all random',
+      component: () => import('../views/FilteredQuotes.vue'),
+      meta: { title: 'quotes' },
+      props: { pageName: 'рандом' }
+    },
+    {
       path: '/castaneda',
       name: 'castaneda',
       component: () => import('../views/FilteredQuotes.vue'),

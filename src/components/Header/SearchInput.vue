@@ -14,19 +14,18 @@ const vLowerCase = {
   }
 }
 
-const handleFilterQuotes = async () => {
-  const routerNameString = router.currentRoute.value.name!.toString()
-  const hasDivision = routerNameString.includes('themes') || routerNameString.includes('books')
-  const routeName = hasDivision ? router.currentRoute.value.meta.author : router.currentRoute.value.name
-  const nextRouteName = router.currentRoute.value.name === 'home' ? 'filterAll' : routeName
+const handleFilterQuotes = () => {
+  const authorName = router.currentRoute.value.meta.author as string
+  const noAuthorDivision = router.currentRoute.value.name === 'home' || router.currentRoute.value.name === 'all random'
+  const nextRouteName = noAuthorDivision ? 'filterAll' : authorName
 
   if (store.filterValue) {
-    await router.push({ name: nextRouteName as string, query: { filter: store.filterValue } })
+    router.push({ name: nextRouteName as string, query: { filter: store.filterValue } })
   } else {
-    await router.push(router.currentRoute.value.path)
+    router.push(router.currentRoute.value.path)
   }
 
-  store.filterQuotes()
+  store.filterQuotes(authorName)
 }
 
 const clearFilter = () => {
