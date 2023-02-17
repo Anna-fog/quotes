@@ -7,7 +7,7 @@
     alt="">
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tumbleweed {
   position: absolute;
   left: -100px;

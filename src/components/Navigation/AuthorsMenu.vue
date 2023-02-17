@@ -80,6 +80,8 @@ onMounted(() => {
   }
 
   &__sections {
+    font-size: 16px;
+
     li {
       &:after {
         content: '';
@@ -96,6 +98,21 @@ onMounted(() => {
       &:last-child {
         &:after {
           display: none;
+        }
+      }
+    }
+
+    li:not(:has(ul)) {
+      position: relative;
+      transition: .3s all ease-in-out;
+
+      &:hover {
+        padding-left: 25px;
+      }
+
+      @media (max-width: 720px) {
+        &:hover {
+          padding-left: 12px;
         }
       }
     }

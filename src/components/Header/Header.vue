@@ -105,13 +105,12 @@ onMounted(async () => {
 
     &__svg {
       position: relative;
-      top: 2px;
+      top: 3px;
       color: var(--color-sun-background);
       transition: .6s all ease;
 
       &:hover {
         transform: rotate(180deg);
-
       }
     }
 
@@ -135,7 +134,7 @@ onMounted(async () => {
       }
 
       .sun-icon__svg {
-        top: 5px;
+        top: 7px;
         color: var(--color-sun-background);
       }
     }

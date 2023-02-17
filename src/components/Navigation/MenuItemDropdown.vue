@@ -63,9 +63,20 @@ const generateRoute = (filter: string | undefined) => `/${props.route}/${filter}
     padding-left: 0;
     margin-top: 4px;
 
+    position: relative;
+    transition: .3s all ease-in-out;
+
+    &:hover {
+      margin-left: 35px;
+    }
+
     @media (max-width: 720px) {
       margin-top: 10px;
       margin-left: 24px;
+
+      &:hover {
+        margin-left: 24px;
+      }
     }
   }
 }
