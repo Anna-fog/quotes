@@ -16,7 +16,7 @@ const randomPicture = computed(() => {
   min-width: 330px;
   width: 330px;
   height: fit-content;
-  margin-top: 50px;
+  margin-top: 56px;
   border-radius: 4px;
   filter: saturate(0.7);
 
@@ -24,6 +24,7 @@ const randomPicture = computed(() => {
     float: right;
     margin-bottom: 30px;
     margin-left: 30px;
+    margin-top: 45px;
     min-width: unset;
     height: fit-content;
     width: 40%;
@@ -32,6 +33,7 @@ const randomPicture = computed(() => {
   @media (max-width: 560px) {
     margin-bottom: 15px;
     margin-left: 15px;
+    margin-top: 60px;
   }
 }
 </style>

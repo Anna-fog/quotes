@@ -22,8 +22,10 @@ const authorName = computed(() => router.currentRoute.value.meta.author)
 
 const filteredQuotes = computed((): Quote[] => store.filteredQuotes as [])
 
-const goToPage = (author: string) => {
-  if (router.currentRoute.value.name?.toString().includes('random') && author !== 'author') {
+const goToPage = (author: string = '') => {
+  store.filterValue = ''
+
+  if (router.currentRoute.value.name?.toString().includes('random') && author === '') {
     location.reload()
   } else {
     router.push({ name: authorName.value as string })
@@ -46,7 +48,7 @@ const quotesAuthorName = computed(() => {
   <div class="quotes__breadcrumbs">
     <router-link to="/">главная /</router-link>
     <a v-if="quotesAuthorName" @click="goToPage('author')">{{ quotesAuthorName }} /</a>
-    <a @click="goToPage">{{ currentPageName }}</a>
+    <a @click="goToPage()">{{ currentPageName }}</a>
     <a v-if="props.filter && filteredQuotes?.length" @click.prevent href="">
        / {{ props.filter }} ({{ filteredQuotes.length }})
     </a>
@@ -56,6 +58,11 @@ const quotesAuthorName = computed(() => {
 <style scoped lang="scss">
 .quotes__breadcrumbs {
   margin-bottom: 30px;
+
+  @media (max-width: 1180px) {
+    position: absolute;
+    margin-right: 20px;
+  }
 
   a {
     margin-right: 2px;

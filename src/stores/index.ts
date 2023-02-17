@@ -25,13 +25,13 @@ export const useQuotesStore = defineStore('quotes',  {
       return allQuotes.authors.find(author => author.route === authorName)
     },
 
-    filterQuotes(authorName: string) {
+    filterQuotes(authorName: string = '') {
       if (authorName) {
         this.filteredQuotes = this.getAuthor(authorName)?.quotes.filter(item =>
           this.filterValue && item.text.toLowerCase().includes(this.filterValue.toLowerCase()))
       } else {
-        this.filteredQuotes = this.allAuthorsQuotes.filter((item: Quote) =>
-          this.filterValue && item.text
+        this.filteredQuotes = this.allAuthorsQuotes.filter((item: Partial<Quote>) =>
+          this.filterValue && item.text && item.text
             .toLowerCase()
             .includes(this.filterValue.toLowerCase()))
       }
@@ -53,7 +53,7 @@ export const useQuotesStore = defineStore('quotes',  {
     },
 
     quotesToShow(filter: string | null, route: any, authorName: string) {
-      if (filter && !this.filteredQuotes?.length) return
+      if (filter && !this.filteredQuotes?.length) return []
 
       if (filter && this.filteredQuotes?.length) {
         return this.filteredQuotes

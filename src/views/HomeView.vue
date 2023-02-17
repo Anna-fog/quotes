@@ -30,6 +30,7 @@ const authors = computed(() => allQuotes.authors)
 
   &__image {
     margin-top: 40px;
+    margin-left: 10px;
     height: 500px;
     width: auto;
     filter: saturate(0.7);

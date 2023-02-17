@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { type PropType, ref } from "vue";
+
+interface MenuItem {
+  name: string,
+  id: number,
+  year: number
+}
 
 const props = defineProps({
   itemName: {
@@ -7,7 +13,7 @@ const props = defineProps({
     required: true
   },
   items: {
-    type: Array,
+    type: Array as PropType<Partial<MenuItem>[]>,
     required: true
   },
   route: {
@@ -22,7 +28,7 @@ const toggleDropdown = () => {
   showItems.value = !showItems.value
 }
 
-const generateRoute = (filter: string) => `/${props.route}/${filter}`
+const generateRoute = (filter: string | undefined) => `/${props.route}/${filter}`
 
 </script>
 
@@ -56,6 +62,11 @@ const generateRoute = (filter: string) => `/${props.route}/${filter}`
     margin-left: 30px;
     padding-left: 0;
     margin-top: 4px;
+
+    @media (max-width: 720px) {
+      margin-top: 10px;
+      margin-left: 24px;
+    }
   }
 }
 </style>

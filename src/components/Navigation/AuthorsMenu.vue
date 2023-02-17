@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, type PropType } from 'vue'
+import { onMounted } from 'vue'
 
-import type { Author } from "@/models/Author";
 import { castanedaBookNames } from "@/data/castanedaBookNames";
 import { castanedaTags } from "@/data/castanedaTags";
 import { useQuotesStore } from "@/stores";
@@ -10,7 +9,7 @@ import MenuItemsDropdown from '@/components/Navigation/MenuItemDropdown.vue'
 
 const props = defineProps({
   author: {
-    type: Object as PropType<Author>,
+    type: Object,
     required: true
   }
 })
@@ -61,6 +60,10 @@ onMounted(() => {
     cursor: context-menu;
     width: fit-content;
     font-size: 18px;
+
+    @media (max-width: 720px) {
+      margin-bottom: 10px;
+    }
   }
 
   a {
@@ -70,6 +73,10 @@ onMounted(() => {
   li {
     list-style-type: none;
     padding-left: 20px;
+
+    @media (max-width: 720px) {
+      padding-left: 12px;
+    }
   }
 
   &__sections {

@@ -14,7 +14,7 @@ const vLowerCase = {
   }
 }
 
-const filterQuotes = async () => {
+const handleFilterQuotes = async () => {
   const routerNameString = router.currentRoute.value.name!.toString()
   const hasDivision = routerNameString.includes('themes') || routerNameString.includes('books')
   const routeName = hasDivision ? router.currentRoute.value.meta.author : router.currentRoute.value.name
@@ -25,23 +25,25 @@ const filterQuotes = async () => {
   } else {
     await router.push(router.currentRoute.value.path)
   }
+
+  store.filterQuotes()
 }
 
 const clearFilter = () => {
   if (!store.filterValue) return
 
   store.filterValue = ''
-  filterQuotes()
+  handleFilterQuotes()
 }
 </script>
 
 <template>
   <div class="search-input">
     <div class="search-input__input">
-      <input v-model="store.filterValue" v-lower-case @keyup.enter="filterQuotes" type="text">
+      <input v-model="store.filterValue" v-lower-case @keyup.enter="handleFilterQuotes" type="text">
       <IconClear v-if="store.filterValue" class="search-input__clear-icon" @click="clearFilter"/>
     </div>
-    <button @click="filterQuotes" class="search-input__button">
+    <button @click="handleFilterQuotes" class="search-input__button">
       <IconSearch class="search-input__search-icon" />
     </button>
   </div>
