@@ -26,16 +26,11 @@ export const useQuotesStore = defineStore('quotes',  {
     },
 
     filterQuotes(authorName: string = '') {
-      if (authorName) {
-        const authorsQuotes = this.getAuthor(authorName)?.quotes
-        this.filteredQuotes = authorsQuotes && authorsQuotes.filter(item =>
-          this.filterValue && item.text.toLowerCase().includes(this.filterValue.toLowerCase()))
-      } else {
-        this.filteredQuotes = this.allAuthorsQuotes.filter((item: Partial<Quote>) =>
-          this.filterValue && item.text && item.text
-            .toLowerCase()
-            .includes(this.filterValue.toLowerCase()))
-      }
+      const quotesToFilter = authorName ? this.getAuthor(authorName)?.quotes : this.allAuthorsQuotes
+
+      this.filteredQuotes = quotesToFilter!.filter((item: Partial<Quote>) =>
+        this.filterValue &&
+        item.text?.toLowerCase().includes(this.filterValue.toLowerCase()))
     },
 
     filterBooks(book: string, authorName: string) {
@@ -58,23 +53,23 @@ export const useQuotesStore = defineStore('quotes',  {
     },
 
     quotesToShow(filter: string | null, route: any, authorName: string) {
-      if (filter && !this.filteredQuotes?.length) return []
+      if (filter) {
+        return this.filteredQuotes?.length ? this.filteredQuotes : []
+      }
 
-      if (filter && this.filteredQuotes?.length) {
-        return this.filteredQuotes
-      } else if (route.name === 'all random') {
+      if (route.name === 'all random') {
         return this.chooseRandomQuoteFromAllAuthors()
+      } else if (route.name === 'filterAll') {
+        return this.allAuthorsQuotes
       } else if (route.name.includes('books')) {
         return this.filterBooks(route.params.id, authorName)
       } else if (route.name.includes('themes')) {
         return this.filterTags(route.params.id, authorName)
       } else if (route.name.includes('random')) {
         return this.chooseRandomQuote(authorName)
-      } else if (route.name === 'filterAll') {
-        return this.allAuthorsQuotes
       } else {
         return this.getAuthor(authorName)?.quotes
       }
-    },
+    }
   }
 })

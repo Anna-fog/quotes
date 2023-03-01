@@ -7,12 +7,13 @@ import OakLeaf from '@/components/AnimatedImages/OakLeaf.vue'
 
 const router = useRouter()
 
-const showTumbleweed = computed(() => {
+const shouldShowTumbleweed = computed(() => {
   return router.currentRoute.value.name === 'random'
 })
 
-const showOakLeaf= computed(() => {
-  return router.currentRoute.value.name === 'nisargadatta random' || router.currentRoute.value.name === 'all random'
+const shouldShowOakLeaf= computed(() => {
+  const routeName = router.currentRoute.value.name
+  return routeName === 'nisargadatta random' || routeName === 'all random'
 })
 </script>
 
@@ -20,8 +21,8 @@ const showOakLeaf= computed(() => {
   <div class="app-wrapper">
     <Header/>
     <RouterView/>
-    <the-tumbleweed v-if="showTumbleweed"/>
-    <oak-leaf v-if="showOakLeaf"/>
+    <the-tumbleweed v-if="shouldShowTumbleweed"/>
+    <oak-leaf v-if="shouldShowOakLeaf"/>
   </div>
 </template>
 

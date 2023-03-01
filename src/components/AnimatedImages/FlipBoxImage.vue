@@ -27,20 +27,26 @@ const showRandomQuote = () => {
   margin-top: 40px;
   margin-left: 40px;
   border-radius: 4px;
-  perspective: 2000px;
   transition: all 1s;
+  transition-delay: .6s;
   cursor: pointer;
 
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 
-  &:hover {
-    box-shadow: inset 0 0 40px rgba(1, 1, 1, 0.47);
-    background-image: url("../../assets/images/enso.png");
+  img {
+    transition: all 0.8s;
+    transition-delay: .6s;
+  }
 
+  &:hover {
     .flip-box__inner {
       transform: rotateY(180deg);
+    }
+
+    img {
+      border-radius: 50%;
     }
   }
 
@@ -61,6 +67,7 @@ const showRandomQuote = () => {
     height: 100%;
     text-align: center;
     transition: transform 1s;
+    transition-delay: .3s;
     transform-style: preserve-3d;
   }
 
@@ -88,7 +95,7 @@ const showRandomQuote = () => {
     transform: rotateY(180deg);
 
     img {
-      filter: saturate(0);
+      filter: saturate(1);
     }
   }
 }
