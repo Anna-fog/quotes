@@ -12,8 +12,9 @@ const props = defineProps({
   pageName: String,
 })
 
-const filter = computed(() => router.currentRoute?.value.query?.filter ?
-  router.currentRoute?.value.query?.filter.toString().toLowerCase() : '')
+const filter = computed(() => {
+  return router.currentRoute?.value.query?.filter?.toString().toLowerCase() || ''
+})
 </script>
 
 <template>
@@ -25,7 +26,6 @@ const filter = computed(() => router.currentRoute?.value.query?.filter ?
     <Transition appear>
       <div class="quotes__main">
         <bread-crumbs :filter="filter" :pageName="props.pageName"/>
-
         <quotes-list/>
       </div>
     </Transition>

@@ -22,10 +22,14 @@ const authorName = computed(() => router.currentRoute.value.meta.author)
 
 const filteredQuotes = computed((): Quote[] => store.filteredQuotes as [])
 
-const goToPage = (author: string = '') => {
+const isRandomPage = computed(() => {
+  return router.currentRoute.value.name?.toString().includes('random')
+})
+
+const redirect = (author: string = '') => {
   store.filterValue = ''
 
-  if (router.currentRoute.value.name?.toString().includes('random') && author === '') {
+  if (isRandomPage.value && author === '') {
     location.reload()
   } else {
     router.push({ name: authorName.value as string })
@@ -33,9 +37,10 @@ const goToPage = (author: string = '') => {
 }
 
 const currentPageName = computed(() => {
-  if (router.currentRoute.value.name === 'books' || router.currentRoute.value.name === 'themes') {
-    return router.currentRoute.value.params.id
-  } else return props.pageName
+  const routerName = router.currentRoute.value.name
+  const hasFilteringParams = routerName === 'books' || routerName === 'themes'
+
+  return hasFilteringParams ? router.currentRoute.value.params.id : props.pageName
 })
 
 const quotesAuthorName = computed(() => {
@@ -47,8 +52,8 @@ const quotesAuthorName = computed(() => {
 <template>
   <div class="quotes__breadcrumbs">
     <router-link to="/">главная /</router-link>
-    <a v-if="quotesAuthorName" @click="goToPage('author')">{{ quotesAuthorName }} /</a>
-    <a @click="goToPage()">{{ currentPageName }}</a>
+    <a v-if="quotesAuthorName" @click="redirect('author')">{{ quotesAuthorName }} /</a>
+    <a @click="redirect()">{{ currentPageName }}</a>
     <a v-if="props.filter && filteredQuotes?.length" @click.prevent href="">
        / {{ props.filter }} ({{ filteredQuotes.length }})
     </a>

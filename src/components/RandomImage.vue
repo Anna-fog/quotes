@@ -3,7 +3,8 @@ import { computed } from "vue";
 import { NUMBER_OF_IMAGES } from "@/constants";
 
 const randomPicture = computed(() => {
-  return `images/random/image_${Math.floor(Math.random() * NUMBER_OF_IMAGES) + 1}.jpg`
+  const randomImageNumber = Math.floor(Math.random() * NUMBER_OF_IMAGES) + 1
+  return `images/random/image_${randomImageNumber}.jpg`
 })
 </script>
 

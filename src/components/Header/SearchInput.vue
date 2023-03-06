@@ -14,9 +14,9 @@ const vLowerCase = {
   }
 }
 
-const handleFilterQuotes = () => {
-  const authorName = router.currentRoute.value.meta.author as string
-  const noAuthorDivision = router.currentRoute.value.name === 'home' || router.currentRoute.value.name === 'all random'
+const redirect = (authorName: string) => {
+  const routerName = router.currentRoute.value.name
+  const noAuthorDivision = routerName === 'home' || routerName === 'all random'
   const nextRouteName = noAuthorDivision ? 'filterAll' : authorName
 
   if (store.filterValue) {
@@ -24,8 +24,13 @@ const handleFilterQuotes = () => {
   } else {
     router.push(router.currentRoute.value.path)
   }
+}
+
+const handleFilterQuotes = () => {
+  const authorName = router.currentRoute.value.meta.author as string
 
   store.filterQuotes(authorName)
+  redirect(authorName)
 }
 
 const clearFilter = () => {
@@ -40,10 +45,10 @@ const clearFilter = () => {
   <div class="search-input">
     <div class="search-input__input">
       <input v-model="store.filterValue" v-lower-case @keyup.enter="handleFilterQuotes" type="text">
-      <IconClear v-if="store.filterValue" class="search-input__clear-icon" @click="clearFilter"/>
+      <icon-clear v-if="store.filterValue" class="search-input__clear-icon" @click="clearFilter"/>
     </div>
     <button @click="handleFilterQuotes" class="search-input__button">
-      <IconSearch class="search-input__search-icon" />
+      <icon-search class="search-input__search-icon" />
     </button>
   </div>
 </template>

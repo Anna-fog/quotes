@@ -20,17 +20,21 @@ const isDark = useDark({
 const toggleDark = useToggle(isDark)
 
 const setInitialDarkMode = () => {
-  toggleDark()
-  localStorage.setItem('initial-mode', 'dark-mode')
+  if (!localStorage.getItem('initial-mode')) {
+    toggleDark()
+    localStorage.setItem('initial-mode', 'dark-mode')
+  }
+}
+
+const setFilterValue = () => {
+  store.filterValue = router.currentRoute.value.query?.filter?.toString() || ''
 }
 
 onMounted(async () => {
   await router.isReady()
-  store.filterValue = router.currentRoute.value.query?.filter?.toString()
 
-  if (!localStorage.getItem('initial-mode')) {
-    setInitialDarkMode()
-  }
+  setFilterValue()
+  setInitialDarkMode()
 })
 </script>
 
@@ -43,7 +47,7 @@ onMounted(async () => {
       <div class="header__actions">
         <search-input/>
         <div :class="['sun-icon', {'sun-icon_sunset': isDark}]" @click="toggleDark()">
-          <IconSun class="sun-icon__svg"></IconSun>
+          <icon-sun class="sun-icon__svg"></icon-sun>
         </div>
       </div>
     </div>

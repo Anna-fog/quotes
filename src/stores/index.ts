@@ -3,7 +3,7 @@ import type { Quote } from "@/models/Quotes";
 import { allQuotes } from "@/data/quotes";
 
 interface QuotesState {
-  filterValue: string | null | undefined,
+  filterValue: string,
   filteredQuotes: Partial<Quote>[] | undefined
 }
 
@@ -26,10 +26,9 @@ export const useQuotesStore = defineStore('quotes',  {
     },
 
     filterQuotes(authorName: string = '') {
-      const quotesToFilter = authorName ? this.getAuthor(authorName)?.quotes : this.allAuthorsQuotes
+      const quotesToFilter = authorName ? this.getAuthor(authorName)!.quotes : this.allAuthorsQuotes
 
-      this.filteredQuotes = quotesToFilter!.filter((item: Partial<Quote>) =>
-        this.filterValue &&
+      this.filteredQuotes = quotesToFilter.filter((item: Partial<Quote>) =>
         item.text?.toLowerCase().includes(this.filterValue.toLowerCase()))
     },
 
@@ -40,35 +39,40 @@ export const useQuotesStore = defineStore('quotes',  {
 
     filterTags(theme: string, authorName: string) {
       return this.getAuthor(authorName)?.quotes.filter((item: Partial<Quote>) =>
-        item.tags && item.tags.includes(theme.toLowerCase()))
+        item.tags?.includes(theme.toLowerCase()))
     },
 
     chooseRandomQuote(authorName: string) {
       const numberOfQuotes = this.getAuthor(authorName)?.quotes.length || 0
-      return [this.getAuthor(authorName)?.quotes[Math.floor(Math.random() * numberOfQuotes)]]
+      return this.getAuthor(authorName)?.quotes[Math.floor(Math.random() * numberOfQuotes)]
     },
 
     chooseRandomQuoteFromAllAuthors() {
-      return [this.allAuthorsQuotes[Math.floor(Math.random() * this.allAuthorsQuotes.length)]]
+      return this.allAuthorsQuotes[Math.floor(Math.random() * this.allAuthorsQuotes.length)]
+    },
+
+    showFilteredQuotes() {
+      return this.filteredQuotes?.length ? this.filteredQuotes : []
     },
 
     quotesToShow(filter: string | null, route: any, authorName: string) {
       if (filter) {
-        return this.filteredQuotes?.length ? this.filteredQuotes : []
+        return this.showFilteredQuotes()
       }
 
-      if (route.name === 'all random') {
-        return this.chooseRandomQuoteFromAllAuthors()
-      } else if (route.name === 'filterAll') {
-        return this.allAuthorsQuotes
-      } else if (route.name.includes('books')) {
-        return this.filterBooks(route.params.id, authorName)
-      } else if (route.name.includes('themes')) {
-        return this.filterTags(route.params.id, authorName)
-      } else if (route.name.includes('random')) {
-        return this.chooseRandomQuote(authorName)
-      } else {
-        return this.getAuthor(authorName)?.quotes
+      switch (true) {
+        case route.name === 'all random':
+          return [this.chooseRandomQuoteFromAllAuthors()];
+        case route.name === 'filterAll':
+          return this.allAuthorsQuotes;
+        case route.name.includes('books'):
+          return this.filterBooks(route.params.id, authorName);
+        case route.name.includes('themes'):
+          return this.filterTags(route.params.id, authorName);
+        case route.name.includes('random'):
+          return [this.chooseRandomQuote(authorName)];
+        default:
+          return this.getAuthor(authorName)?.quotes ?? [];
       }
     }
   }

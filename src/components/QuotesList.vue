@@ -10,10 +10,15 @@ const authorName = computed(() => router.currentRoute.value.meta.author)
 
 const store = useQuotesStore()
 
-const filter = computed(() => router.currentRoute?.value.query?.filter ?
-  router.currentRoute?.value.query?.filter.toString().toLowerCase() : '')
+const filter = computed(() => {
+  return router.currentRoute?.value.query?.filter
+    ? router.currentRoute?.value.query?.filter.toString().toLowerCase()
+    : ''
+})
 
-const quotes = computed(() => store.quotesToShow(filter.value, router.currentRoute.value, authorName.value as string))
+const quotes = computed(() => {
+  return store.quotesToShow(filter.value, router.currentRoute.value, authorName.value as string)
+})
 
 const filteredQuotes = computed((): Partial<Quote>[] => store.filteredQuotes as [])
 

@@ -1068,13 +1068,6 @@ export const allQuotes = {
           tags: ['свобода', 'путь воина'],
           id: '138'
         },
-        {
-          text: '',
-          details: '«» (1998), Карлос Кастанеда',
-          bookName: '',
-          tags: [''],
-          id: '130'
-        },
       ]
     },
     {
