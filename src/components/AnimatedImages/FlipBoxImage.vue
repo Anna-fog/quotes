@@ -13,9 +13,6 @@ const showRandomQuote = () => {
       <div class="flip-box__front">
         <img src="@/assets/images/image_nav_page.jpg">
       </div>
-      <div class="flip-box__back">
-        <img src="@/assets/images/image_nav_page.jpg">
-      </div>
     </div>
   </div>
 </template>
@@ -28,7 +25,7 @@ const showRandomQuote = () => {
   margin-left: 40px;
   border-radius: 4px;
   transition: all 1s;
-  transition-delay: .6s;
+  transition-delay: .3s;
   cursor: pointer;
 
   background-size: contain;
@@ -37,7 +34,7 @@ const showRandomQuote = () => {
 
   img {
     transition: all 0.8s;
-    transition-delay: .6s;
+    transition-delay: .3s;
   }
 
   &:hover {
@@ -47,6 +44,7 @@ const showRandomQuote = () => {
 
     img {
       border-radius: 50%;
+      filter: saturate(1);
     }
   }
 
@@ -68,10 +66,9 @@ const showRandomQuote = () => {
     text-align: center;
     transition: transform 1s;
     transition-delay: .3s;
-    transform-style: preserve-3d;
   }
 
-  &__front, &__back {
+  &__front {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -88,14 +85,6 @@ const showRandomQuote = () => {
         width: 100%;
         height: fit-content;
       }
-    }
-  }
-
-  &__back {
-    transform: rotateY(180deg);
-
-    img {
-      filter: saturate(1);
     }
   }
 }

@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
@@ -9,5 +9,19 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    restoreMocks: true,
+    coverage: {
+      provider: 'c8',
+      include: ['src/**/*.ts', 'src/**/*.vue'],
+      exclude: ['src/assets/*', 'src/**/*.test.ts', 'src/**/*.json'],
+      lines: 50,
+      functions: 50,
+      branches: 50,
+      statements: 50,
+    },
+  },
 })
