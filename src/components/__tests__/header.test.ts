@@ -1,5 +1,5 @@
 import { beforeAll, expect } from "vitest";
-import { mount, VueWrapper } from "@vue/test-utils";
+import { mount, VueWrapper, RouterLinkStub } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import TheHeader from "../Header/TheHeader.vue";
@@ -28,6 +28,9 @@ describe('TheHeader', () => {
     wrapper = mount(TheHeader, {
       global: {
         plugins: [createTestingPinia({ stubActions: false })],
+        components: {
+          'RouterLink': RouterLinkStub,
+        },
       }
     })
   })

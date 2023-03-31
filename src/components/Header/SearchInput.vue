@@ -34,8 +34,6 @@ const handleFilterQuotes = () => {
 }
 
 const clearFilter = () => {
-  if (!store.filterValue) return
-
   store.filterValue = ''
   handleFilterQuotes()
 }
