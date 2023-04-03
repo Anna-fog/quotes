@@ -41,9 +41,9 @@ onMounted(async () => {
 <template>
   <header class="header">
     <div class="header__content container">
-      <RouterLink to="/">
+      <router-link to="/">
         <img src="../../assets/images/enso.png" class="header__logo" alt="enso">
-      </RouterLink>
+      </router-link>
       <div class="header__actions">
         <search-input/>
         <div :class="['sun-icon', {'sun-icon_sunset': isDark}]" @click="toggleDark()">

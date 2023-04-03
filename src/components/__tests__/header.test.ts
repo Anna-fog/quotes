@@ -29,7 +29,7 @@ describe('TheHeader', () => {
       global: {
         plugins: [createTestingPinia({ stubActions: false })],
         components: {
-          'RouterLink': RouterLinkStub,
+          'router-link': RouterLinkStub,
         },
       }
     })

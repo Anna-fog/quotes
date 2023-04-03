@@ -3,6 +3,7 @@ import { mount, VueWrapper } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 
 import SearchInput from "../Header/SearchInput.vue";
+
 import { useQuotesStore } from "../../stores";
 
 let wrapper: VueWrapper
