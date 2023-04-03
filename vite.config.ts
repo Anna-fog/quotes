@@ -16,7 +16,7 @@ export default defineConfig({
     restoreMocks: true,
     coverage: {
       provider: 'c8',
-      include: ['src/**/*.ts', 'src/**/*.vue'],
+      include: ['src/**/*.ts', 'src/*.vue', 'src/**/*.vue'],
       exclude: ['src/assets/*', 'src/**/*.test.ts', 'src/**/*.json'],
       lines: 50,
       functions: 50,
