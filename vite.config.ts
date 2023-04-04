@@ -17,7 +17,7 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
       include: ['src/**/*.ts', 'src/*.vue', 'src/**/*.vue'],
-      exclude: ['src/assets/*', 'src/**/*.test.ts', 'src/**/*.json'],
+      exclude: ['src/assets/*', 'src/**/*.test.ts', 'src/**/*.json', 'src/components/icons/*'],
       lines: 50,
       functions: 50,
       branches: 50,

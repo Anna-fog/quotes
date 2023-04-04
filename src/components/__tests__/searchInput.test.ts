@@ -5,6 +5,7 @@ import { createTestingPinia } from "@pinia/testing";
 import SearchInput from "../Header/SearchInput.vue";
 
 import { useQuotesStore } from "../../stores";
+import { useRouter } from "vue-router";
 
 let wrapper: VueWrapper
 
@@ -76,6 +77,72 @@ describe('SearchInput', () => {
     button.trigger('click')
 
     expect(store.filterQuotes).toHaveBeenCalled()
+  })
+
+  it('redirects to "filterAll" route if the the previous route name is "home" by clicking on Button element', () => {
+    const push = vi.fn()
+    useRouter.mockImplementationOnce(() => ({
+      push: push,
+      currentRoute: {
+        value: {
+          name: 'home',
+          filter: '',
+          meta: {
+            author: ''
+          }
+        }
+      }
+    }))
+
+    wrapper = mount(SearchInput, {
+      global: {
+        plugins: [createTestingPinia()],
+        directives: {
+          vLowerCase: directive
+        }
+      }
+    })
+
+    const store = useQuotesStore()
+    store.filterValue = 'test'
+
+    const button = wrapper.find('button')
+    button.trigger('click')
+
+    expect(push).toHaveBeenCalledWith({ name: 'filterAll', query: { filter: store.filterValue } })
+  })
+
+  it('redirects to "filterAll" route if the the previous route name is "all random" by clicking on Button element', () => {
+    const push = vi.fn()
+    useRouter.mockImplementationOnce(() => ({
+      push: push,
+      currentRoute: {
+        value: {
+          name: 'all random',
+          filter: '',
+          meta: {
+            author: ''
+          }
+        }
+      }
+    }))
+
+    wrapper = mount(SearchInput, {
+      global: {
+        plugins: [createTestingPinia()],
+        directives: {
+          vLowerCase: directive
+        }
+      }
+    })
+
+    const store = useQuotesStore()
+    store.filterValue = 'test'
+
+    const button = wrapper.find('button')
+    button.trigger('click')
+
+    expect(push).toHaveBeenCalledWith({ name: 'filterAll', query: { filter: store.filterValue } })
   })
 
   it('shows clear icon if there is text in the input', async () => {
