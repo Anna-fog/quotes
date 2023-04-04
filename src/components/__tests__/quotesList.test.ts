@@ -48,6 +48,7 @@ describe('QuotesList', () => {
   it('shows correct "Nothing Found" response if filtered quotes list is empty and filter value includes one word', async () => {
     const ONE_WORD_FILTER_VALUE = 'test'
 
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       currentRoute: {
         value: {
@@ -65,6 +66,7 @@ describe('QuotesList', () => {
   })
 
   it('shows empty page message if the quotes list is empty', () => {
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       currentRoute: {
         value: {
@@ -82,6 +84,7 @@ describe('QuotesList', () => {
   })
 
   it('shows list of quotes', () => {
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       currentRoute: {
         value: {

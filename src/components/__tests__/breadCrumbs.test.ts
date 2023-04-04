@@ -93,6 +93,7 @@ describe('BreadCrumbs', () => {
   it('shows correct current page name with filtering params', () => {
     const BOOK_NAME = 'example book'
 
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       push: vi.fn(),
       currentRoute: {
@@ -127,6 +128,7 @@ describe('BreadCrumbs', () => {
   it('shows correct current page name without filtering params', () => {
     const PAGE_NAME = 'example page name'
 
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       push: vi.fn(),
       currentRoute: {
@@ -161,6 +163,7 @@ describe('BreadCrumbs', () => {
   it('reloads page with random quote by clicking on the link', () => {
     const PAGE_NAME = 'example page name'
 
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       push: vi.fn(),
       currentRoute: {

@@ -81,6 +81,7 @@ describe('SearchInput', () => {
 
   it('redirects to "filterAll" route if the the previous route name is "home" by clicking on Button element', () => {
     const push = vi.fn()
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       push: push,
       currentRoute: {
@@ -114,6 +115,7 @@ describe('SearchInput', () => {
 
   it('redirects to "filterAll" route if the the previous route name is "all random" by clicking on Button element', () => {
     const push = vi.fn()
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({
       push: push,
       currentRoute: {

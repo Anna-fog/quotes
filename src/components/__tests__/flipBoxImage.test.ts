@@ -22,6 +22,7 @@ describe('RandomImage', () => {
 
   it('goes to route with random image by clicking on "flip-box" element', () => {
     const push = vi.fn()
+    // @ts-ignore
     useRouter.mockImplementationOnce(() => ({ push }))
 
     wrapper = mount(FlipBoxImage)
