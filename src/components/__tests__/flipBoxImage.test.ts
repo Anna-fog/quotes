@@ -1,4 +1,3 @@
-import { beforeAll, expect } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 import { useRouter } from "vue-router";
 

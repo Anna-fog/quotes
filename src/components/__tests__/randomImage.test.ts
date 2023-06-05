@@ -1,4 +1,3 @@
-import { beforeAll, expect } from "vitest";
 import { mount, VueWrapper } from "@vue/test-utils";
 
 import RandomImage from "../RandomImage.vue";

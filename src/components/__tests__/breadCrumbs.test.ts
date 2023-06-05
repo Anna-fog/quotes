@@ -1,5 +1,4 @@
 import { mount, VueWrapper, RouterLinkStub } from "@vue/test-utils";
-import { beforeAll, describe, expect } from "vitest";
 import { createTestingPinia } from "@pinia/testing";
 
 import { useRouter } from "vue-router";

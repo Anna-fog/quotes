@@ -1,5 +1,4 @@
 import { mount, VueWrapper, RouterLinkStub } from "@vue/test-utils";
-import { beforeAll, expect } from "vitest";
 
 import MenuItemDropdown from "../Navigation/MenuItemDropdown.vue";
 
