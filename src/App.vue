@@ -21,9 +21,9 @@ const shouldShowOakLeaf= computed(() => {
   <div class="app-wrapper">
     <the-header/>
 
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component, route }">
       <transition  mode="out-in">
-        <component :is="Component" />
+        <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
 
