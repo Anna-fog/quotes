@@ -45,6 +45,7 @@ const showRandomQuote = () => {
     img {
       border-radius: 50%;
       filter: saturate(1);
+      box-shadow: rgb(82, 103, 110) 0 2px 4px, rgb(171, 189, 196) 0 7px 13px -3px, rgb(135, 146, 148) 0px -3px 0 inset;
     }
   }
 

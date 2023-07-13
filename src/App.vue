@@ -20,7 +20,13 @@ const shouldShowOakLeaf= computed(() => {
 <template>
   <div class="app-wrapper">
     <the-header/>
-    <router-view/>
+
+    <router-view v-slot="{ Component }">
+      <transition  mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+
     <the-tumbleweed v-if="shouldShowTumbleweed"/>
     <oak-leaf v-if="shouldShowOakLeaf"/>
   </div>
@@ -32,5 +38,15 @@ const shouldShowOakLeaf= computed(() => {
   min-height: 100vh;
   padding-bottom: 30px;
   background-color: var(--color-background);
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
